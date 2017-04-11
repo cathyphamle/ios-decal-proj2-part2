@@ -121,21 +121,19 @@ func getPosts(user: CurrentUser, completion: @escaping ([Post]?) -> Void) {
     dbRef.child(firPostsNode).observeSingleEvent(of: .value, with: {(snapshot) in
         if snapshot.exists() {
             if let dict = snapshot.value as? [String: AnyObject] {
-                for key in dict.keys {
-                    var readBool = false
-//                    for i in dict.keys {
-//                        if i == key {
-//                            readBool = true
-//                        }
-//                    }
+                user.getReadPostIDs(completion: { (pArray) in
+                    for key in dict.keys {
+                        var readBool = false
+                        if pArray.contains(key) {
+                            readBool = true
+                        }
                     
-                    let p = Post(id: key, username: dict[key]?["username"] as! String, postImagePath: dict[key]?["imagePath"] as! String, thread: dict[key]?["thread"] as! String, dateString: dict[key]?["date"] as! String, read: readBool)
-                    postArray.append(p)
-                
-                }
-            }
-            completion(postArray)
-        } else {
+                        let p = Post(id: key, username: dict[key]?["username"] as! String, postImagePath: dict[key]?["imagePath"] as! String, thread: dict[key]?["thread"] as! String, dateString: dict[key]?["date"] as! String, read: readBool)
+                        postArray.append(p)
+                    }
+                completion(postArray)
+            })
+            } } else {
             completion(nil)
         }
     })
