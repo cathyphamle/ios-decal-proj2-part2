@@ -42,8 +42,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         // YOUR CODE HERE
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: {(user,error) in
             if let error = error {
-                let alertc = UIAlertController(title: "error", message: "hi", preferredStyle: .alert)
-                let okact = UIAlertAction(title: "click me", style: .default) { (action:UIAlertAction) in
+                let alertc = UIAlertController(title: "error", message: "password must be more than 5 characters", preferredStyle: .alert)
+                let okact = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction) in
                     print("Ok")
                     }
                 alertc.addAction(okact)
